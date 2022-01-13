@@ -8,33 +8,33 @@ class SharedPrefrencesHelper(context: Context) {
         "login_session",
         Context.MODE_PRIVATE
     )
-    var firstname = "firstname"
+    var firstname:String? = "firstname"
         get() = sharedPreferences.getString(field, "")!!
         set(firstname) {
             val edit = sharedPreferences.edit()
             edit.putString(this.firstname, firstname)
-            edit.commit()
+            edit.apply()
         }
-    var lastname = "lastname"
+    var lastname:String? = "lastname"
         get() = sharedPreferences.getString(field, "")!!
         set(lastname) {
             val edit = sharedPreferences.edit()
             edit.putString(this.lastname, lastname)
-            edit.commit()
+            edit.apply()
         }
-    var username = "username"
+    var username:String? = "username"
         get() = sharedPreferences.getString(field, "")!!
         set(username) {
             val edit = sharedPreferences.edit()
             edit.putString(this.username, username)
-            edit.commit()
+            edit.apply()
         }
-    var email = "email"
+    var email:String? = "email"
         get() = sharedPreferences.getString(field, "")!!
         set(email) {
             val edit = sharedPreferences.edit()
             edit.putString(this.email, email)
-            edit.commit()
+            edit.apply()
         }
 
 }

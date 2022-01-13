@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.navigation.fragment.findNavController
+import com.example.login.databinding.FragmentFirstBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -20,6 +22,12 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class loginFragment2 : Fragment() {
+    private var _binding: loginFragment2? = null
+
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
+
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -38,47 +46,52 @@ class loginFragment2 : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
         val sharedPrefrencesHelper: SharedPrefrencesHelper = SharedPrefrencesHelper(requireContext())
-        var firstname: TextView? = null
-        var lastname: TextView? = null
-        var usernamee: TextView? = null
-        var email: TextView? = null
-        var logoutBtn: Button? = null
+        var txtView_firstname: TextView? = binding.firstname
+        var txtView_lastname: TextView? = binding.lastname
+        var txtView_usernamee: TextView? = binding.usernamee
+        var txtView_email: TextView? = binding.email
+        var btn_logoutBtn: Button? = binding.logoutBtn
 
-        val username = sharedPrefrencesHelper.getUsername();
+        val username:String? = sharedPrefrencesHelper.username;
         if (username == null || username.isEmpty()) {
-            startActivity(new Intent(this, LoginActivity.class));
-            finish();
+            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment) //Here we navigate to the Login Fragment
+//            startActivity(new Intent(this, LoginActivity.class));
+//            finish();
         }
-        firstname = findViewById(R.id.firstname);
-        lastname = findViewById(R.id.lastname);
-        usernamee = findViewById(R.id.username);
-        email = findViewById(R.id.email);
-        logoutBtn = findViewById(R.id.logoutBtn);
-        firstname.setText(sharedPrefrencesHelper.getFirstname());
-        lastname.setText(sharedPrefrencesHelper.getLastname());
-        usernamee.setText(sharedPrefrencesHelper.getUsername());
-        email.setText(sharedPrefrencesHelper.getEmail());
-        logoutBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sharedPrefrencesHelper.setFirstname(null);
-                sharedPrefrencesHelper.setLastname(null);
-                sharedPrefrencesHelper.setUsername(null);
-                sharedPrefrencesHelper.setEmail(null);
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                finish();
+        txtView_firstname!!.text = sharedPrefrencesHelper.firstname
+        txtView_lastname!!.text = sharedPrefrencesHelper.lastname
+        txtView_usernamee!!.text = sharedPrefrencesHelper.username
+        txtView_email!!.text = sharedPrefrencesHelper.email
+        logoutBtn!!.setOnClickListener {
+            sharedPrefrencesHelper.setFirstname(null)
+            sharedPrefrencesHelper.setLastname(null)
+            sharedPrefrencesHelper.setUsername(null)
+            sharedPrefrencesHelper.setEmail(null)
+            startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+            finish()
+        }
+        logoutBtn!!.setOnClickListener(object : OnClickListener() {
+            fun onClick(view: View?) {
+                sharedPrefrencesHelper.setFirstname(null)
+                sharedPrefrencesHelper.setLastname(null)
+                sharedPrefrencesHelper.setUsername(null)
+                sharedPrefrencesHelper.setEmail(null)
+                startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+                finish()
             }
-        });
+        })
     }
-}
-    }
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login2, container, false)
+//        return inflater.inflate(R.layout.fragment_login2, container, false)
+        _binding = loginFragmentFirstBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     companion object {
@@ -99,5 +112,9 @@ class loginFragment2 : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
