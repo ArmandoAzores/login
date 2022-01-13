@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.navigation.fragment.findNavController
 import com.example.login.databinding.FragmentFirstBinding
+import com.example.login.databinding.FragmentLogin2Binding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -22,7 +23,7 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class loginFragment2 : Fragment() {
-    private var _binding: loginFragment2? = null
+    private var _binding: FragmentLogin2Binding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -46,11 +47,11 @@ class loginFragment2 : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
         val sharedPrefrencesHelper: SharedPrefrencesHelper = SharedPrefrencesHelper(requireContext())
-        var txtView_firstname: TextView? = binding.firstname
-        var txtView_lastname: TextView? = binding.lastname
-        var txtView_usernamee: TextView? = binding.usernamee
-        var txtView_email: TextView? = binding.email
-        var btn_logoutBtn: Button? = binding.logoutBtn
+        val txtView_firstname: TextView = binding.firstname
+        val txtView_lastname: TextView = binding.lastname
+        val txtView_usernamee: TextView = binding.username
+        val txtView_email: TextView = binding.email
+        val btn_logoutBtn: Button = binding.logoutBtn
 
         val username:String? = sharedPrefrencesHelper.username;
         if (username == null || username.isEmpty()) {
@@ -58,28 +59,20 @@ class loginFragment2 : Fragment() {
 //            startActivity(new Intent(this, LoginActivity.class));
 //            finish();
         }
-        txtView_firstname!!.text = sharedPrefrencesHelper.firstname
-        txtView_lastname!!.text = sharedPrefrencesHelper.lastname
-        txtView_usernamee!!.text = sharedPrefrencesHelper.username
-        txtView_email!!.text = sharedPrefrencesHelper.email
-        logoutBtn!!.setOnClickListener {
-            sharedPrefrencesHelper.setFirstname(null)
-            sharedPrefrencesHelper.setLastname(null)
-            sharedPrefrencesHelper.setUsername(null)
-            sharedPrefrencesHelper.setEmail(null)
-            startActivity(Intent(this@MainActivity, LoginActivity::class.java))
-            finish()
+        txtView_firstname.text = sharedPrefrencesHelper.firstname
+        txtView_lastname.text = sharedPrefrencesHelper.lastname
+        txtView_usernamee.text = sharedPrefrencesHelper.username
+        txtView_email.text = sharedPrefrencesHelper.email
+
+        btn_logoutBtn.setOnClickListener {
+            sharedPrefrencesHelper.firstname = null
+            sharedPrefrencesHelper.lastname = null
+            sharedPrefrencesHelper.username = null
+            sharedPrefrencesHelper.email = null
+//            startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment) //Here we navigate to the Login Fragment
+//            finish()
         }
-        logoutBtn!!.setOnClickListener(object : OnClickListener() {
-            fun onClick(view: View?) {
-                sharedPrefrencesHelper.setFirstname(null)
-                sharedPrefrencesHelper.setLastname(null)
-                sharedPrefrencesHelper.setUsername(null)
-                sharedPrefrencesHelper.setEmail(null)
-                startActivity(Intent(this@MainActivity, LoginActivity::class.java))
-                finish()
-            }
-        })
     }
 
 
@@ -90,7 +83,7 @@ class loginFragment2 : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
 //        return inflater.inflate(R.layout.fragment_login2, container, false)
-        _binding = loginFragmentFirstBinding.inflate(inflater, container, false)
+        _binding = FragmentLogin2Binding.inflate(inflater, container, false)
         return binding.root
     }
 
